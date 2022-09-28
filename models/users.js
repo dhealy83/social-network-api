@@ -17,16 +17,27 @@ const userSchema = new Schema(
       minLength: 6,
       maxLength: 127,
     },
-    thoughts: [thoughtSchema],
-    friends: [userSchema],
+    thoughts: [
+        {type: String,
+        ref: "Thought"}
+    ],
+    friends: [
+        {type: Schema.Types.ObjectId,
+        ref: "User"}
+    ]
+    },
   },
   {
     toJSON: {
-      getters: true,
+      virtuals: true,
     },
+    id: false,
   }
 );
 
-const User = model("user", userSchema);
+userSchema.virtual("friendCount").get(function () {
+  return this.friends.length;
+});
+const User = model("User", userSchema);
 
 module.exports = User;
