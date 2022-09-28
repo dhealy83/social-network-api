@@ -1,13 +1,18 @@
-// TODO: get all user
+const router = require("express").Router();
+const {
+  getUser,
+  getSingleUser,
+  createUser,
+  updateUser,
+  deleteUser,
+  addFriend,
+  deleteFriend,
+} = require("../../controllers/userController");
 
-// TODO: get one user
+router.route("/").get(getUser).post(createUser);
 
-// TODO: post new user
+router.route("/:userId").get(getSingleUser).put(updateUser).delete(deleteUser);
 
-// TODO: put/update user
+router.route("/:userId/friends/:friendId").post(addFriend).delete(deleteFriend);
 
-// TODO: delete user
-
-// TODO: post to add a new friend to a user's list
-
-// TODO: delete to remove friend from user's list.
+module.exports = router;
