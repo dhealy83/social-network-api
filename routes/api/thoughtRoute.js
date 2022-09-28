@@ -1,13 +1,25 @@
-// TODO: get all thoughts
+const router = require("express").Router();
+const {
+  getThought,
+  getSingleThought,
+  createThought,
+  updateThought,
+  deleteThought,
+  addReaction,
+  deleteReaction,
+} = require("../../controllers/thoughtController");
 
-// TODO: get one thought
+router.route("/").get(getThought).post(createThought);
 
-// TODO: post new thought
+router
+  .route("/:thoughtId")
+  .get(getSingleThought)
+  .put(updateThought)
+  .delete(deleteThought);
 
-// TODO: put/update thought
+router
+  .route("/thoughts/:thoughtId/reactions")
+  .post(addThought)
+  .delete(deleteThought);
 
-// TODO: delete thought
-
-// TODO: post to create a reaction in a single thought reaction array
-
-// TODO: delete to a reaction...
+module.exports = router;
