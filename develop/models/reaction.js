@@ -1,18 +1,16 @@
 // TODO This will be a schema only. This will not be a model, but rather will be used as the reaction field's subdocument schema in the Thought model.
 
 // Look at act:23-24
-const { Schema, model, SchemaType } = require("mongoose");
+const { Schema, model } = require("mongoose");
 
-const reactionSchema = new SchemaType({
-  reactionId: [
-    {
-      type: Schema.Types.ObjectId,
-      default: () => new Types.ObjectId(),
-    },
-  ],
+const reactionSchema = new Schema({
+  reactionId: {
+    type: Schema.Types.ObjectId,
+    default: () => new Types.ObjectId(),
+  },
   reactionBody: {
     type: String,
-    require: true,
+    required: true,
     maxLength: 280,
   },
   username: {
@@ -21,13 +19,17 @@ const reactionSchema = new SchemaType({
   },
   createdAt: {
     type: Date,
-    get: (date) => {
-      if (date) return date.toISOString().split("T")[0];
-    },
+    default: Date.now(),
   },
+
   toJSON: {
     virtuals: true,
   },
+  id: false,
+});
+
+reactionSchema.virtual("reactionCount").get(function () {
+  return this.meta.reaction;
 });
 
 const Reaction = model("reaction", reactionSchema);
