@@ -1,13 +1,13 @@
 const { User, Thought } = require("../models");
 
 module.exports = {
-  // TODO: get all thoughts
+  // TODO get all thoughts
   getThought(req, res) {
     Thought.find()
       .then((users) => res.json(users))
       .catch((err) => res.status(500).json(err));
   },
-  // TODO: get one thought
+  // TODO get one thought
   getSingleThought(req, res) {
     Thought.findOne({ _id: req.params.thoughtId })
       .select("-__v")
@@ -18,7 +18,7 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
-  // TODO: post new thought
+  // TODO post new thought
   createThought(req, res) {
     Thought.create(req.body)
       .then((thought) => res.json(thought))
@@ -27,7 +27,7 @@ module.exports = {
         return res.status(500).json(err);
       });
   },
-  // TODO: put/update thought
+  // TODO put/update thought
   updateThought(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
@@ -41,7 +41,7 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
-  // TODO: delete thought
+  // TODO delete thought
   deleteThought(req, res) {
     Thought.findOneAndDelete({ _id: req.params.thoughtId })
       .then((thought) =>
@@ -52,7 +52,7 @@ module.exports = {
       .then(() => res.json({ message: "Thought deleted!" }))
       .catch((err) => res.status(500).json(err));
   },
-  // TODO: post to create a reaction in a single thought reaction array
+  // TODO post to create a reaction in a single thought reaction array
   addReaction(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
@@ -66,7 +66,7 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
-  // TODO: delete to a reaction...
+  // TODO delete to a reaction...
   deleteReaction(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
