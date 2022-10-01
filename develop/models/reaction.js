@@ -1,17 +1,14 @@
 // TODO This will be a schema only. This will not be a model, but rather will be used as the reaction field's subdocument schema in the Thought model.
 
 // Look at act:23-24
-const { Schema, model } = require("mongoose");
+const { Schema, model, Types } = require("mongoose");
 
 const reactionSchema = new Schema(
   {
-    reactionId: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Thought",
-        default: () => new Types.ObjectId(),
-      },
-    ],
+    reactionId: {
+      type: String,
+    },
+
     reactionBody: {
       type: String,
       required: true,
@@ -30,13 +27,8 @@ const reactionSchema = new Schema(
     toJSON: {
       virtuals: true,
     },
+    id: false,
   }
 );
-
-reactionSchema.virtual("reaction").get(function () {
-  return this.meta.reaction;
-});
-
-const Reaction = model("reaction", reactionSchema);
 
 module.exports = reactionSchema;

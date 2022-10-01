@@ -1,11 +1,15 @@
 const { User, Thought } = require("../models");
+const { Types } = require("mongoose");
 
 module.exports = {
   // TODO get all thoughts
   getThought(req, res) {
     Thought.find()
       .then((users) => res.json(users))
-      .catch((err) => res.status(500).json(err));
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+      });
   },
   // TODO get one thought
   getSingleThought(req, res) {
@@ -56,7 +60,15 @@ module.exports = {
   addReaction(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
-      { $addToSet: { thoughts: req.params.thoughtId } },
+      {
+        $addToSet: {
+          reactions: {
+            reactionBody: req.body.reactionBody,
+            username: req.body.username,
+            reactionId: new Types.ObjectId(),
+          },
+        },
+      },
       { runValidators: true, new: true }
     )
       .then((thought) =>
@@ -70,7 +82,13 @@ module.exports = {
   deleteReaction(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
-      { $pull: { thoughts: req.params.thoughtId } },
+      {
+        $pull: {
+          reactions: {
+            reactionId: req.params.reactionId,
+          },
+        },
+      },
       { runValidators: true, new: true }
     )
       .then((thought) =>

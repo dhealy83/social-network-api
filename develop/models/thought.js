@@ -5,32 +5,33 @@ const thoughtSchema = new Schema(
   {
     thoughtText: {
       type: String,
-      required: true,
+      require: true,
       minLength: 1,
       maxLength: 280,
     },
     createdAt: {
       type: Date,
+      default: Date.now(),
       get: (date) => {
-        if (date) return date.toISOString().split("T")[0];
+        if (date)
+          return date.toLocaleDateString() + " " + date.toLocaleTimeString();
       },
     },
-    username: [
-      {
-        type: String,
-        require: true,
-        ObjectId: Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
+    username: {
+      type: String,
+      require: true,
+      ObjectId: Schema.Types.ObjectId,
+      ref: "User",
+    },
     reactions: [reactionSchema],
   },
   {
     toJSON: {
-      virtuals: true,
+      getters: true,
     },
     id: false,
-  }
+  },
+  { timestamp: true }
 );
 
 thoughtSchema.virtual("reactionCount").get(function () {
